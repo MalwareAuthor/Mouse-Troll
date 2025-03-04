@@ -1,0 +1,30 @@
+#include <iostream>
+#include <windows.h>
+#include <thread>
+#include <chrono>
+
+void moveMouse(int durationInSeconds) {
+    auto start = std::chrono::steady_clock::now(); 
+    
+    while (true) {
+     
+        SetCursorPos(rand() % 1920, rand() % 1080);
+        
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        
+
+        auto now = std::chrono::steady_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds>(now - start).count() >= durationInSeconds) {
+            break;  
+        }
+    }
+}
+
+int main() {
+    std::thread mouseThread(moveMouse, 10);  
+    
+    mouseThread.join();
+    
+    std::cout << "Program finished after 10 seconds." << std::endl;
+    return 0;
+}
